@@ -21,7 +21,7 @@ from hammer.views import IndexView, RegisterView
 UserCreationForm
 urlpatterns = [
     path('admin/', admin.site.urls),
-    path('', IndexView.as_view()),
+    path('', IndexView.as_view(), name="index"),
     path('accounts/', include('django.contrib.auth.urls')),
     path('accounts/create', RegisterView.as_view(), name='register'),
 ]
