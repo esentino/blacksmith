@@ -5,12 +5,6 @@
     <title>Title</title>
 </head>
 <body>
-    level = models.IntegerField(default=1)
-    experience = models.IntegerField(default=0)
-    heating_attribute = models.IntegerField(default=1)
-    holding_attribute = models.IntegerField(default=1)
-    hitting_attribute = models.IntegerField(default=1)
-    shaping_attribute = models.IntegerField(default=1)
 {% if blacksmith %}
 <p>Level: {{ blacksmith.level }}</p>
 <p>Exp: {{ blacksmith.experience }}</p>
