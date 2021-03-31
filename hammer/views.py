@@ -34,6 +34,6 @@ class ProfileView(LoginRequiredMixin, TemplateView):
 
 class CreateBlacksmith(LoginRequiredMixin, View):
     def get(self, request):
-        if request.user.blacksmith is None:
+        if not Blacksmith.objects.filter(owner=request.user).exists():
             Blacksmith.objects.create(owner=request.user)
         return redirect('profile')
