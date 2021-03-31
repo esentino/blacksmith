@@ -1,0 +1,25 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Title</title>
+</head>
+<body>
+    level = models.IntegerField(default=1)
+    experience = models.IntegerField(default=0)
+    heating_attribute = models.IntegerField(default=1)
+    holding_attribute = models.IntegerField(default=1)
+    hitting_attribute = models.IntegerField(default=1)
+    shaping_attribute = models.IntegerField(default=1)
+{% if blacksmith %}
+<p>Level: {{ blacksmith.level }}</p>
+<p>Exp: {{ blacksmith.experience }}</p>
+<p>Heating: {{ blacksmith.heating_attribute }}</p>
+<p>Holding: {{ blacksmith.holding_attribute }}</p>
+<p>Hitting: {{ blacksmith.hitting_attribute }}</p>
+<p>Shaping: {{ blacksmith.shaping_attribute }}</p>
+{% else %}
+<a href="{% url 'create-blacksmith' %}">Utwórz kowala</a>
+{% endif %}
+</body>
+</html>

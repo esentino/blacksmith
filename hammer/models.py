@@ -12,4 +12,4 @@ class Blacksmith(models.Model):
     holding_attribute = models.IntegerField(default=1)
     hitting_attribute = models.IntegerField(default=1)
     shaping_attribute = models.IntegerField(default=1)
-    owner = models.OneToOneField(User, on_delete=models.CASCADE)
+    owner = models.OneToOneField(User, on_delete=models.CASCADE, related_name='blacksmith')
