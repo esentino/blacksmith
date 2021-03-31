@@ -24,9 +24,11 @@ class ProfileView(LoginRequiredMixin, TemplateView):
 
     def get_context_data(self, **kwargs):
         kwargs = super().get_context_data(**kwargs)
-        blacksmith = self.request.user.blacksmith
-        if blacksmith:
+        try:
+            blacksmith = self.request.user.blacksmith
             kwargs['blacksmith'] = blacksmith
+        except Blacksmith.DoesNotExist:
+            pass
         return kwargs
 
 
