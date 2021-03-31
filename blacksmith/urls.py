@@ -24,6 +24,6 @@ urlpatterns = [
     path('', IndexView.as_view(), name="index"),
     path('accounts/', include('django.contrib.auth.urls')),
     path('accounts/create', RegisterView.as_view(), name='register'),
-    path('accounts/profile', ProfileView.as_view(), name='profile'),
-    path('acccouts/create/blacksmith', CreateBlacksmith.as_view(), name='create-blacksmith')
+    path('accounts/profile/', ProfileView.as_view(), name='profile'),
+    path('accounts/create/blacksmith', CreateBlacksmith.as_view(), name='create-blacksmith')
 ]
