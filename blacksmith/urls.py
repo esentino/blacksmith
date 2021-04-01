@@ -14,16 +14,14 @@ Including another URLconf
     2. Add a URL to urlpatterns:  path('blog/', include('blog.urls'))
 """
 from django.contrib import admin
-from django.contrib.auth.forms import UserCreationForm
 from django.urls import path, include
 from hammer.views import IndexView, RegisterView, ProfileView, CreateBlacksmith
 
-UserCreationForm
 urlpatterns = [
-    path('admin/', admin.site.urls),
-    path('', IndexView.as_view(), name="index"),
-    path('accounts/', include('django.contrib.auth.urls')),
-    path('accounts/create', RegisterView.as_view(), name='register'),
-    path('accounts/profile/', ProfileView.as_view(), name='profile'),
-    path('accounts/create/blacksmith', CreateBlacksmith.as_view(), name='create-blacksmith')
+    path("admin/", admin.site.urls),
+    path("", IndexView.as_view(), name="index"),
+    path("accounts/", include("django.contrib.auth.urls")),
+    path("accounts/create", RegisterView.as_view(), name="register"),
+    path("accounts/profile/", ProfileView.as_view(), name="profile"),
+    path("accounts/create/blacksmith", CreateBlacksmith.as_view(), name="create-blacksmith"),
 ]

@@ -16,16 +16,19 @@ class Migration(migrations.Migration):
 
     operations = [
         migrations.CreateModel(
-            name='Blacksmith',
+            name="Blacksmith",
             fields=[
-                ('id', models.UUIDField(default=uuid.uuid4, editable=False, primary_key=True, serialize=False)),
-                ('level', models.IntegerField(default=1)),
-                ('experience', models.IntegerField(default=0)),
-                ('heating_attribute', models.IntegerField(default=1)),
-                ('holding_attribute', models.IntegerField(default=1)),
-                ('hitting_attribute', models.IntegerField(default=1)),
-                ('shaping_attribute', models.IntegerField(default=1)),
-                ('owner', models.OneToOneField(on_delete=django.db.models.deletion.CASCADE, to=settings.AUTH_USER_MODEL)),
+                ("id", models.UUIDField(default=uuid.uuid4, editable=False, primary_key=True, serialize=False)),
+                ("level", models.IntegerField(default=1)),
+                ("experience", models.IntegerField(default=0)),
+                ("heating_attribute", models.IntegerField(default=1)),
+                ("holding_attribute", models.IntegerField(default=1)),
+                ("hitting_attribute", models.IntegerField(default=1)),
+                ("shaping_attribute", models.IntegerField(default=1)),
+                (
+                    "owner",
+                    models.OneToOneField(on_delete=django.db.models.deletion.CASCADE, to=settings.AUTH_USER_MODEL),
+                ),
             ],
         ),
     ]

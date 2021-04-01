@@ -5,28 +5,32 @@ from django.urls import reverse_lazy
 from django.views.generic import CreateView, TemplateView
 from django.views.generic.base import View
 
-from hammer.models import Blacksmith
+from hammer.models import Blacksmith, Task
 
 
 class IndexView(View):
     def get(self, request):
-        return render(request, 'hammer/index.html')
+        return render(request, "hammer/index.html")
 
 
 class RegisterView(CreateView):
     form_class = UserCreationForm
-    template_name = 'hammer/register.html'
-    success_url = reverse_lazy('index')
+    template_name = "hammer/register.html"
+    success_url = reverse_lazy("index")
 
 
 class ProfileView(LoginRequiredMixin, TemplateView):
-    template_name = 'hammer/profile.html'
+    template_name = "hammer/profile.html"
 
     def get_context_data(self, **kwargs):
         kwargs = super().get_context_data(**kwargs)
         try:
             blacksmith = self.request.user.blacksmith
-            kwargs['blacksmith'] = blacksmith
+            kwargs["blacksmith"] = blacksmith
+            count = Task.objects.filter(owner=self.user).count()
+            if count < 4:
+                for i in range(4 - count + 1):
+                    Task.generate_task()
         except Blacksmith.DoesNotExist:
             pass
         return kwargs
@@ -36,4 +40,4 @@ class CreateBlacksmith(LoginRequiredMixin, View):
     def get(self, request):
         if not Blacksmith.objects.filter(owner=request.user).exists():
             Blacksmith.objects.create(owner=request.user)
-        return redirect('profile')
+        return redirect("profile")

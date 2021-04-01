@@ -6,12 +6,22 @@
 </head>
 <body>
 {% if blacksmith %}
-<p>Level: {{ blacksmith.level }}</p>
+<p>Gold: {{ blacksmith.gold }}</p>
 <p>Exp: {{ blacksmith.experience }}</p>
 <p>Heating: {{ blacksmith.heating_attribute }}</p>
 <p>Holding: {{ blacksmith.holding_attribute }}</p>
 <p>Hitting: {{ blacksmith.hitting_attribute }}</p>
 <p>Shaping: {{ blacksmith.shaping_attribute }}</p>
+<h2>Tasks:</h2>
+{% for task in blacksmith.tasks %}
+<p>Task:</p>
+<p>Heating time: {{ task.heating_time }}</p>
+<p>Holding time: {{ task.holding_time }}</p>
+<p>Hitting time: {{ task.hitting_time }}</p>
+<p>Shaping time: {{ task.shaping_time }}</p>
+<p>Time to done: {{ task.time_to_done }}</p>
+<br>
+{% endfor %}
 {% else %}
 <a href="{% url 'create-blacksmith' %}">Utwórz kowala</a>
 {% endif %}
