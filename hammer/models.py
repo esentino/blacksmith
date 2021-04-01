@@ -1,4 +1,3 @@
-from __future__ import annotations
 import math
 import random
 import uuid
@@ -56,7 +55,7 @@ class Task(models.Model):
         return math.ceil(self.heating_work / self.blacksmith.heating_attribute)
 
     @classmethod
-    def generate_task(cls, blacksmith) -> Task:
+    def generate_task(cls, blacksmith):
         task = cls()
         task.blacksmith = blacksmith
         task.heating_work = random.randint(1, blacksmith.heating_attribute * 100)
