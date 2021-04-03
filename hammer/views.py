@@ -1,6 +1,7 @@
+from django.contrib import messages
 from django.contrib.auth.forms import UserCreationForm
 from django.contrib.auth.mixins import LoginRequiredMixin
-from django.shortcuts import render, redirect
+from django.shortcuts import get_object_or_404, redirect, render
 from django.urls import reverse_lazy
 from django.views.generic import CreateView, TemplateView
 from django.views.generic.base import View
@@ -27,17 +28,33 @@ class ProfileView(LoginRequiredMixin, TemplateView):
         try:
             blacksmith = self.request.user.blacksmith
             kwargs["blacksmith"] = blacksmith
-            count = Task.objects.filter(blacksmith=blacksmith).count()
-            if count < 4:
-                for i in range(4 - count):
-                    Task.generate_task(blacksmith)
+            self.prepare_tasks_for_blacksmith(blacksmith)
         except Blacksmith.DoesNotExist:
             pass
         return kwargs
+
+    @staticmethod
+    def prepare_tasks_for_blacksmith(blacksmith):
+        count = Task.objects.filter(blacksmith=blacksmith).count()
+        if count >= 4:
+            return
+        for i in range(4 - count):
+            Task.generate_task(blacksmith)
 
 
 class CreateBlacksmith(LoginRequiredMixin, View):
     def get(self, request):
         if not Blacksmith.objects.filter(owner=request.user).exists():
             Blacksmith.objects.create(owner=request.user)
+        return redirect("profile")
+
+
+class StartTask(LoginRequiredMixin, View):
+    def get(self, request, task_id):
+        task = get_object_or_404(Task, pk=task_id)
+        if task.can_start:
+            task.start()
+            messages.success(request, "Task started")
+        else:
+            messages.error(request, "Can't start task other task in progress")
         return redirect("profile")

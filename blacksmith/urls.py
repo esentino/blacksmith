@@ -14,8 +14,9 @@ Including another URLconf
     2. Add a URL to urlpatterns:  path('blog/', include('blog.urls'))
 """
 from django.contrib import admin
-from django.urls import path, include
-from hammer.views import IndexView, RegisterView, ProfileView, CreateBlacksmith
+from django.urls import include, path
+
+from hammer.views import CreateBlacksmith, IndexView, ProfileView, RegisterView, StartTask
 
 urlpatterns = [
     path("admin/", admin.site.urls),
@@ -24,4 +25,5 @@ urlpatterns = [
     path("accounts/create", RegisterView.as_view(), name="register"),
     path("accounts/profile/", ProfileView.as_view(), name="profile"),
     path("accounts/create/blacksmith", CreateBlacksmith.as_view(), name="create-blacksmith"),
+    path("accounts/task/start/<int:task_id>", StartTask.as_view(), name="start-task"),
 ]

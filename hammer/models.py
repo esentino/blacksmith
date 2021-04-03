@@ -4,6 +4,13 @@ import uuid
 
 from django.contrib.auth.models import User
 from django.db import models
+from django.utils.timezone import now
+from django.utils.translation import gettext_lazy as _
+
+
+class TaskStatus(models.IntegerChoices):
+    WAITING = 1, _("Waiting")
+    IN_PROGRESS = 2, _("In progress")
 
 
 class Blacksmith(models.Model):
@@ -23,6 +30,8 @@ class Task(models.Model):
     holding_work = models.IntegerField()
     hitting_work = models.IntegerField()
     shaping_work = models.IntegerField()
+    status = models.IntegerField(choices=TaskStatus.choices, default=TaskStatus.WAITING)
+    start_time = models.DateTimeField(null=True, blank=True)
 
     @property
     def experience(self) -> int:
@@ -64,3 +73,24 @@ class Task(models.Model):
         task.shaping_work = random.randint(1, blacksmith.shaping_attribute * 100)
         task.save()
         return task
+
+    @property
+    def can_start(self):
+        if self.status != TaskStatus.WAITING:
+            return False
+        for task in self.blacksmith.tasks.all():
+            if task.status != TaskStatus.WAITING:
+                return False
+        return True
+
+    @property
+    def in_progress(self):
+        return self.status == TaskStatus.IN_PROGRESS
+
+    def start(self):
+        if self.can_start:
+            self.status = TaskStatus.IN_PROGRESS
+            self.start_time = now()
+            self.save()
+            return True
+        return False
