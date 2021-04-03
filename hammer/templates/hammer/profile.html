@@ -20,6 +20,10 @@
 <p>Hitting time: {{ task.hitting_time }}</p>
 <p>Shaping time: {{ task.shaping_time }}</p>
 <p>Time to done: {{ task.time_to_done }}</p>
+<p>Status: {{ task.get_status_display }}</p>
+{% if task.can_start %}
+<a href="{% url 'start-task' task.pk %}">Start task</a>
+{% endif %}
 <br>
 {% endfor %}
 {% else %}
