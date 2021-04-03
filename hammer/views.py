@@ -27,10 +27,10 @@ class ProfileView(LoginRequiredMixin, TemplateView):
         try:
             blacksmith = self.request.user.blacksmith
             kwargs["blacksmith"] = blacksmith
-            count = Task.objects.filter(owner=self.user).count()
+            count = Task.objects.filter(blacksmith=blacksmith).count()
             if count < 4:
-                for i in range(4 - count + 1):
-                    Task.generate_task()
+                for i in range(4 - count):
+                    Task.generate_task(blacksmith)
         except Blacksmith.DoesNotExist:
             pass
         return kwargs

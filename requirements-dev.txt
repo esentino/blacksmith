@@ -2,3 +2,4 @@
 mypy
 django-stubs
 black
+pytest-django

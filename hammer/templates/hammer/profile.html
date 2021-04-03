@@ -13,7 +13,7 @@
 <p>Hitting: {{ blacksmith.hitting_attribute }}</p>
 <p>Shaping: {{ blacksmith.shaping_attribute }}</p>
 <h2>Tasks:</h2>
-{% for task in blacksmith.tasks %}
+{% for task in blacksmith.tasks.all %}
 <p>Task:</p>
 <p>Heating time: {{ task.heating_time }}</p>
 <p>Holding time: {{ task.holding_time }}</p>
