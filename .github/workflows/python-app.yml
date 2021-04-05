@@ -37,3 +37,6 @@ jobs:
     - name: Coverage
       run: |
         pytest --cov=.
+    - name: Black
+      run: |
+        black .
