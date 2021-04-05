@@ -2,6 +2,7 @@ import math
 import random
 import uuid
 from datetime import timedelta
+from typing import Optional
 
 from django.contrib.auth.models import User
 from django.db import models
@@ -58,6 +59,18 @@ class Task(models.Model):
         return self.heating_time + self.holding_time + self.hitting_time + self.shaping_time
 
     @property
+    def time_left(self) -> Optional[timedelta]:
+        if self.time_elapsed:
+            return timedelta(days=self.days_of_work, seconds=self.seconds_of_work) - self.time_elapsed
+        return None
+    @property
+    def time_elapsed(self) -> Optional[timedelta]:
+        if not self.start_time:
+            return None
+        time_elapsed = now() - self.start_time
+        return time_elapsed
+
+    @property
     def shaping_time(self):
         return math.ceil(self.shaping_work / self.blacksmith.shaping_attribute)
 
@@ -108,14 +121,19 @@ class Task(models.Model):
     @property
     def is_done(self):
         if self.status == TaskStatus.IN_PROGRESS:
-            actual_time = now()
-            elapsed_time = actual_time - self.start_time
-            days_work = self.time_to_done // DAY_IN_SECONDS
-            seconds_work = self.time_to_done % DAY_IN_SECONDS
+            days_work = self.days_of_work
+            seconds_work = self.seconds_of_work
             work_time = timedelta(days=days_work, seconds=seconds_work)
-            print(locals())
-            return elapsed_time > work_time
+            return self.elapsed_time > work_time
         return False
+
+    @property
+    def seconds_of_work(self):
+        return self.time_to_done % DAY_IN_SECONDS
+
+    @property
+    def days_of_work(self):
+        return self.time_to_done // DAY_IN_SECONDS
 
     def process(self):
         if self.is_done:

@@ -74,6 +74,7 @@ def test_task_in_progress_exceed_time_to_done_should_remove_task_and_add_gold_an
 
     blacksmith = user_with_blacksmith_and_task.blacksmith
     task = blacksmith.tasks.first()
+    assert task
     task.start()
 
     task_id = task.pk
