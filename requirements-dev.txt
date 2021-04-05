@@ -7,3 +7,6 @@ faker
 isort
 coverage
 pytest-cov
+libfaketime
+pytest-libfaketime
+flake8

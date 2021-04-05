@@ -27,6 +27,9 @@ class ProfileView(LoginRequiredMixin, TemplateView):
         kwargs = super().get_context_data(**kwargs)
         try:
             blacksmith = self.request.user.blacksmith
+            for task in blacksmith.tasks.all():
+                task.process()
+            blacksmith.refresh_from_db()
             kwargs["blacksmith"] = blacksmith
             self.prepare_tasks_for_blacksmith(blacksmith)
         except Blacksmith.DoesNotExist:

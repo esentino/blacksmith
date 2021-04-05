@@ -1,11 +1,15 @@
 import math
 import random
 import uuid
+from datetime import timedelta
 
 from django.contrib.auth.models import User
 from django.db import models
+from django.db.models import F
 from django.utils.timezone import now
 from django.utils.translation import gettext_lazy as _
+
+DAY_IN_SECONDS = 3600 * 24
 
 
 class TaskStatus(models.IntegerChoices):
@@ -22,6 +26,12 @@ class Blacksmith(models.Model):
     hitting_attribute = models.IntegerField(default=1)
     shaping_attribute = models.IntegerField(default=1)
     owner = models.OneToOneField(User, on_delete=models.CASCADE, related_name="blacksmith")
+
+    def add_exp(self, experience):
+        self.experience = F("experience") + experience
+
+    def add_gold(self, gold):
+        self.gold = F("gold") + gold
 
 
 class Task(models.Model):
@@ -94,3 +104,22 @@ class Task(models.Model):
             self.save()
             return True
         return False
+
+    @property
+    def is_done(self):
+        if self.status == TaskStatus.IN_PROGRESS:
+            actual_time = now()
+            elapsed_time = actual_time - self.start_time
+            days_work = self.time_to_done // DAY_IN_SECONDS
+            seconds_work = self.time_to_done % DAY_IN_SECONDS
+            work_time = timedelta(days=days_work, seconds=seconds_work)
+            print(locals())
+            return elapsed_time > work_time
+        return False
+
+    def process(self):
+        if self.is_done:
+            self.blacksmith.add_gold(self.gold)
+            self.blacksmith.add_exp(self.experience)
+            self.blacksmith.save()
+            self.delete()
