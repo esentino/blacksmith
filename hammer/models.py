@@ -60,15 +60,14 @@ class Task(models.Model):
 
     @property
     def time_left(self) -> Optional[timedelta]:
-        if self.time_elapsed:
-            return timedelta(days=self.days_of_work, seconds=self.seconds_of_work) - self.time_elapsed
+        if self.elapsed_time:
+            return timedelta(days=self.days_of_work, seconds=self.seconds_of_work) - self.elapsed_time
         return None
     @property
-    def time_elapsed(self) -> Optional[timedelta]:
+    def elapsed_time(self) -> Optional[timedelta]:
         if not self.start_time:
             return None
-        time_elapsed = now() - self.start_time
-        return time_elapsed
+        return  now() - self.start_time
 
     @property
     def shaping_time(self):
