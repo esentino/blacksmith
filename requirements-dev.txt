@@ -5,3 +5,5 @@ black
 pytest-django
 faker
 isort
+coverage
+pytest-cov
