@@ -121,6 +121,6 @@ USE_TZ = True
 
 STATIC_URL = "/static/"
 
-import django_heroku   # noqa: E402
+import django_heroku  # noqa: E402
 
 django_heroku.settings(locals())

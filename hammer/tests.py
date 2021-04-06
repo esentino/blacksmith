@@ -90,3 +90,51 @@ def test_task_in_progress_exceed_time_to_done_should_remove_task_and_add_gold_an
     blacksmith.refresh_from_db()
     assert blacksmith.gold == gold
     assert blacksmith.experience == exp
+
+
+@pytest.mark.django_db
+def test_add_heating_attribute(user_with_blacksmith_and_task: User, client: Client):
+    blacksmith = user_with_blacksmith_and_task.blacksmith
+    blacksmith.experience = 10000
+    blacksmith.save()
+    assert blacksmith.heating_attribute == 1
+    added = blacksmith.add_heating_attribute()
+    assert added
+    blacksmith.refresh_from_db()
+    assert blacksmith.heating_attribute == 2
+
+
+@pytest.mark.django_db
+def test_add_holding_attribute(user_with_blacksmith_and_task: User, client: Client):
+    blacksmith = user_with_blacksmith_and_task.blacksmith
+    blacksmith.experience = 10000
+    blacksmith.save()
+    assert blacksmith.holding_attribute == 1
+    added = blacksmith.add_holding_attribute()
+    assert added
+    blacksmith.refresh_from_db()
+    assert blacksmith.holding_attribute == 2
+
+
+@pytest.mark.django_db
+def test_add_hitting_attribute(user_with_blacksmith_and_task: User, client: Client):
+    blacksmith = user_with_blacksmith_and_task.blacksmith
+    blacksmith.experience = 10000
+    blacksmith.save()
+    assert blacksmith.hitting_attribute == 1
+    added = blacksmith.add_hitting_attribute()
+    assert added
+    blacksmith.refresh_from_db()
+    assert blacksmith.hitting_attribute == 2
+
+
+@pytest.mark.django_db
+def test_add_shaping_attribute(user_with_blacksmith_and_task: User, client: Client):
+    blacksmith = user_with_blacksmith_and_task.blacksmith
+    blacksmith.experience = 10000
+    blacksmith.save()
+    assert blacksmith.shaping_attribute == 1
+    added = blacksmith.add_shaping_attribute()
+    assert added
+    blacksmith.refresh_from_db()
+    assert blacksmith.shaping_attribute == 2

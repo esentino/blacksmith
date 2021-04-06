@@ -8,10 +8,26 @@
 {% if blacksmith %}
 <p>Gold: {{ blacksmith.gold }}</p>
 <p>Exp: {{ blacksmith.experience }}</p>
-<p>Heating: {{ blacksmith.heating_attribute }}</p>
-<p>Holding: {{ blacksmith.holding_attribute }}</p>
-<p>Hitting: {{ blacksmith.hitting_attribute }}</p>
-<p>Shaping: {{ blacksmith.shaping_attribute }}</p>
+<p>Heating: {{ blacksmith.heating_attribute }}
+    {% if blacksmith.heating_experience_price >= blacksmith.experience %}
+    <a href="{% url 'add-heating' %}">Add 1 point for {{ blacksmith.heating_experience_price }} experience.</a>
+    {% endif %}
+</p>
+<p>Holding: {{ blacksmith.holding_attribute }}
+    {% if blacksmith.holding_experience_price >= blacksmith.experience %}
+    <a href="{% url 'add-holding' %}">Add 1 point for {{ blacksmith.holding_experience_price }} experience.</a>
+    {% endif %}
+</p>
+<p>Hitting: {{ blacksmith.hitting_attribute }}
+    {% if blacksmith.holding_experience_price >= blacksmith.experience %}
+    <a href="{% url 'add-hitting' %}">Add 1 point for {{ blacksmith.hitting_experience_price }} experience.</a>
+    {% endif %}
+</p>
+<p>Shaping: {{ blacksmith.shaping_attribute }}
+    {% if blacksmith.shaping_experience_price >= blacksmith.experience %}
+    <a href="{% url 'add-shaping' %}">Add 1 point for {{ blacksmith.shaping_experience_price }} experience.</a>
+    {% endif %}
+</p>
 <h2>Tasks:</h2>
 {% for task in blacksmith.tasks.all %}
 <p>Task:</p>

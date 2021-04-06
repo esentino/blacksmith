@@ -61,3 +61,35 @@ class StartTask(LoginRequiredMixin, View):
         else:
             messages.error(request, "Can't start task other task in progress")
         return redirect("profile")
+
+
+class AddHeatingAttributeView(LoginRequiredMixin, View):
+    def get(self, request):
+        added = request.user.blacksmith.add_heating_attribute()
+        if added:
+            messages.success(request, "Attribute added")
+        return redirect("profile")
+
+
+class AddHoldingAttributeView(LoginRequiredMixin, View):
+    def get(self, request):
+        added = request.user.blacksmith.add_holding_attribute()
+        if added:
+            messages.success(request, "Attribute added")
+        return redirect("profile")
+
+
+class AddHittingAttributeView(LoginRequiredMixin, View):
+    def get(self, request):
+        added = request.user.blacksmith.add_hitting_attribute()
+        if added:
+            messages.success(request, "Attribute added")
+        return redirect("profile")
+
+
+class AddShapingAttributeView(LoginRequiredMixin, View):
+    def get(self, request):
+        added = request.user.blacksmith.add_shaping_attribute()
+        if added:
+            messages.success(request, "Attribute added")
+        return redirect("profile")

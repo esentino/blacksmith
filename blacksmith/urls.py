@@ -16,7 +16,17 @@ Including another URLconf
 from django.contrib import admin
 from django.urls import include, path
 
-from hammer.views import CreateBlacksmith, IndexView, ProfileView, RegisterView, StartTask
+from hammer.views import (
+    AddHeatingAttributeView,
+    AddHittingAttributeView,
+    AddHoldingAttributeView,
+    AddShapingAttributeView,
+    CreateBlacksmith,
+    IndexView,
+    ProfileView,
+    RegisterView,
+    StartTask,
+)
 
 urlpatterns = [
     path("admin/", admin.site.urls),
@@ -26,4 +36,8 @@ urlpatterns = [
     path("accounts/profile/", ProfileView.as_view(), name="profile"),
     path("accounts/create/blacksmith", CreateBlacksmith.as_view(), name="create-blacksmith"),
     path("accounts/task/start/<int:task_id>", StartTask.as_view(), name="start-task"),
+    path("accounts/profile/add/heating", AddHeatingAttributeView.as_view(), name="add-heating"),
+    path("accounts/profile/add/holding", AddHoldingAttributeView.as_view(), name="add-holding"),
+    path("accounts/profile/add/hitting", AddHittingAttributeView.as_view(), name="add-hitting"),
+    path("accounts/profile/add/shaping", AddShapingAttributeView.as_view(), name="add-shaping"),
 ]

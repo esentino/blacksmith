@@ -34,6 +34,62 @@ class Blacksmith(models.Model):
     def add_gold(self, gold):
         self.gold = F("gold") + gold
 
+    @property
+    def attribute_multiplication(self) -> int:
+        return self.heating_attribute * self.holding_attribute * self.hitting_attribute * self.shaping_attribute
+
+    @property
+    def heating_experience_price(self) -> int:
+        return self.heating_attribute * 100 + self.attribute_multiplication
+
+    @property
+    def holding_experience_price(self) -> int:
+        return self.holding_attribute * 100 + self.attribute_multiplication
+
+    @property
+    def hitting_experience_price(self) -> int:
+        return self.hitting_attribute * 100 + self.attribute_multiplication
+
+    @property
+    def shaping_experience_price(self) -> int:
+        return self.shaping_attribute * 100 + self.attribute_multiplication
+
+    def add_heating_attribute(self):
+        if self.experience < self.heating_experience_price:
+            return False
+
+        self.experience -= self.heating_experience_price
+        self.heating_attribute = F("heating_attribute") + 1
+        self.save()
+        return True
+
+    def add_holding_attribute(self):
+        if self.experience < self.holding_experience_price:
+            return False
+
+        self.experience -= self.holding_experience_price
+        self.holding_attribute = F("holding_attribute") + 1
+        self.save()
+        return True
+
+    def add_hitting_attribute(self):
+        if self.experience < self.hitting_experience_price:
+            return False
+
+        self.experience -= self.hitting_experience_price
+        self.hitting_attribute = F("hitting_attribute") + 1
+        self.save()
+        return True
+
+    def add_shaping_attribute(self):
+        if self.experience < self.shaping_experience_price:
+            return False
+
+        self.experience -= self.shaping_experience_price
+        self.shaping_attribute = F("shaping_attribute") + 1
+        self.save()
+        return True
+
 
 class Task(models.Model):
     blacksmith = models.ForeignKey(Blacksmith, on_delete=models.CASCADE, related_name="tasks")
@@ -63,11 +119,12 @@ class Task(models.Model):
         if self.elapsed_time:
             return timedelta(days=self.days_of_work, seconds=self.seconds_of_work) - self.elapsed_time
         return None
+
     @property
     def elapsed_time(self) -> Optional[timedelta]:
         if not self.start_time:
             return None
-        return  now() - self.start_time
+        return now() - self.start_time
 
     @property
     def shaping_time(self):
