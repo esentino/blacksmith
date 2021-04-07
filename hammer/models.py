@@ -105,6 +105,9 @@ class Task(models.Model):
     status = models.IntegerField(choices=TaskStatus.choices, default=TaskStatus.WAITING)
     start_time = models.DateTimeField(null=True, blank=True)
 
+    class Meta:
+        ordering = ['-status']
+
     @property
     def experience(self) -> int:
         return self.heating_work + self.holding_work + self.hitting_work + self.shaping_work
@@ -140,7 +143,7 @@ class Task(models.Model):
 
     @property
     def left_progress(self) -> Optional[int]:
-        return 100 - self.progress
+        return 100 - self.progress if self.progress else None
 
     @property
     def shaping_time(self) -> int:
