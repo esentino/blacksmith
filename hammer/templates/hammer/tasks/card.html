@@ -1,0 +1,26 @@
+<div class="card col-lg-6 mb-3">
+    <p>Heating time: {{ task.heating_time }}</p>
+    <p>Holding time: {{ task.holding_time }}</p>
+    <p>Hitting time: {{ task.hitting_time }}</p>
+    <p>Shaping time: {{ task.shaping_time }}</p>
+    <p>Time to done: {{ task.time_to_done }}</p>
+
+    <p>Status: {{ task.get_status_display }}</p>
+    {% if task.can_start %}
+    <a href="{% url 'start-task' task.pk %}" class="btn btn-primary">Start task</a>
+    {% endif %}
+    {% if task.in_progress %}
+
+    <div class="progress">
+        <div class="progress-bar  bg-info" role="progressbar" style="width: {{ task.progress }}%;"
+             aria-valuemin="0" aria-valuemax="100">
+            {% if task.progress > task.left_progress %} Time left: {{ task.time_left }} {% endif %}
+        </div>
+        <div class="progress-bar  bg-warning" role="progressbar" style="width: {{ task.left_progress }}%"
+        >
+            {% if task.progress <= task.left_progress %} Time left: {{ task.time_left }} {% endif %}
+        </div>
+    </div>
+    {% endif %}
+
+</div>

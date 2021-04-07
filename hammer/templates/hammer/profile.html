@@ -1,53 +1,61 @@
-<!DOCTYPE html>
-<html lang="en">
-<head>
-    <meta charset="UTF-8">
-    <title>Title</title>
-</head>
-<body>
+{% extends 'base.html' %}
+{% block content %}
 {% if blacksmith %}
-<p>Gold: {{ blacksmith.gold }}</p>
-<p>Exp: {{ blacksmith.experience }}</p>
-<p>Heating: {{ blacksmith.heating_attribute }}
-    {% if blacksmith.heating_experience_price <= blacksmith.experience %}
-    <a href="{% url 'add-heating' %}">Add 1 point for {{ blacksmith.heating_experience_price }} experience.</a>
-    {% endif %}
-</p>
-<p>Holding: {{ blacksmith.holding_attribute }}
-    {% if blacksmith.holding_experience_price <= blacksmith.experience %}
-    <a href="{% url 'add-holding' %}">Add 1 point for {{ blacksmith.holding_experience_price }} experience.</a>
-    {% endif %}
-</p>
-<p>Hitting: {{ blacksmith.hitting_attribute }}
-    {% if blacksmith.hitting_experience_price <= blacksmith.experience %}
-    <a href="{% url 'add-hitting' %}">Add 1 point for {{ blacksmith.hitting_experience_price }} experience.</a>
-    {% endif %}
-</p>
-<p>Shaping: {{ blacksmith.shaping_attribute }}
-    {% if blacksmith.shaping_experience_price <= blacksmith.experience %}
-    <a href="{% url 'add-shaping' %}">Add 1 point for {{ blacksmith.shaping_experience_price }} experience.</a>
-    {% endif %}
-</p>
-<h2>Tasks:</h2>
-{% for task in blacksmith.tasks.all %}
-<p>Task:</p>
-<p>Heating time: {{ task.heating_time }}</p>
-<p>Holding time: {{ task.holding_time }}</p>
-<p>Hitting time: {{ task.hitting_time }}</p>
-<p>Shaping time: {{ task.shaping_time }}</p>
-<p>Time to done: {{ task.time_to_done }}</p>
+<div class="row">
+    <div class="card col-lg-6">
+        <div class="card-header">
+            Statistics:
+        </div>
+        <ul class="list-group list-group-flush ">
+            <li class="list-group-item">Gold: {{ blacksmith.gold }}</li>
+            <li class="list-group-item">Exp: {{ blacksmith.experience }}</li>
+            <li class="list-group-item">Heating: {{ blacksmith.heating_attribute }}
+                {% if blacksmith.heating_experience_price <= blacksmith.experience %}
+                <a href="{% url 'add-heating' %}" class="btn btn-primary">
+                    + 1 point for {{ blacksmith.heating_experience_price }} experience.
+                </a>
+                {% endif %}
+            </li>
+            <li class="list-group-item">Holding: {{ blacksmith.holding_attribute }}
+                {% if blacksmith.holding_experience_price <= blacksmith.experience %}
+                <a href="{% url 'add-holding' %}" class="btn btn-primary">
+                    + 1 point for {{ blacksmith.holding_experience_price }} experience.
+                </a>
+                {% endif %}
+            </li>
+            <li class="list-group-item">Hitting: {{ blacksmith.hitting_attribute }}
+                {% if blacksmith.hitting_experience_price <= blacksmith.experience %}
+                <a href="{% url 'add-hitting' %}" class="btn btn-primary">
+                    + 1 point for {{ blacksmith.hitting_experience_price }} experience.
+                </a>
+                {% endif %}
+            </li>
+            <li class="list-group-item">Shaping: {{ blacksmith.shaping_attribute }}
+                {% if blacksmith.shaping_experience_price <= blacksmith.experience %}
+                <a href="{% url 'add-shaping' %}" class="btn btn-primary">
+                    + 1 point for {{ blacksmith.shaping_experience_price }} experience.
+                </a>
+                {% endif %}
+            </li>
+        </ul>
+    </div>
+    <div class="card  col-lg-6">
+        <div class="card-header">
+            Tasks:
+        </div>
+        <div class="row">
+            {% for task in blacksmith.tasks.all %}
+            {% include 'hammer/tasks/card.html' %}
+            {% endfor %}
 
-<p>Status: {{ task.get_status_display }}</p>
-{% if task.can_start %}
-<a href="{% url 'start-task' task.pk %}">Start task</a>
-{% endif %}
-{% if task.in_progress %}
-<p>Time left: {{ task.time_left }}</p>
-{% endif %}
-<br>
-{% endfor %}
+
+        </div>
+    </div>
+</div>
 {% else %}
-<a href="{% url 'create-blacksmith' %}">Utwórz kowala</a>
+<div class="card col-lg-6">
+    <a href="{% url 'create-blacksmith' %}" class="btn btn-primary">Utwórz kowala</a>
+</div>
 {% endif %}
-</body>
-</html>
+
+{% endblock %}

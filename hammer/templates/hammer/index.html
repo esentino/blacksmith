@@ -1,12 +1,6 @@
-<!DOCTYPE html>
-<html lang="en">
-<head>
-    <meta charset="UTF-8">
-    <title>Main Page</title>
-</head>
-<body>
+{% extends 'base.html' %}
+{% block content %}
 <h1> Tu nic nie ma</h1>
-<a href="{% url 'login' %}">Logowanie</a>
-<a href="{% url 'register' %}">Rejestracja</a>
-</body>
-</html>
+<a href="{% url 'login' %}" class="btn btn-primary btn-lg">Logowanie</a>
+<a href="{% url 'register' %}" class="btn btn-primary btn-lg">Rejestracja</a>
+{% endblock %}

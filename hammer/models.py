@@ -132,6 +132,17 @@ class Task(models.Model):
         return now() - self.start_time
 
     @property
+    def progress(self) -> Optional[int]:
+        if self.elapsed_time and self.time_left:
+            total_time_delta = self.time_left + self.elapsed_time
+            return math.floor(self.elapsed_time/total_time_delta * 100)
+        return None
+
+    @property
+    def left_progress(self) -> Optional[int]:
+        return 100 - self.progress
+
+    @property
     def shaping_time(self) -> int:
         return math.ceil(self.shaping_work / self.blacksmith.shaping_attribute)
 
