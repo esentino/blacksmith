@@ -1,8 +1,10 @@
+from __future__ import annotations
+
 import math
 import random
 import uuid
 from datetime import timedelta
-from typing import Optional
+from typing import Optional, Type, TypeVar
 
 from django.contrib.auth.models import User
 from django.db import models
@@ -28,10 +30,10 @@ class Blacksmith(models.Model):
     shaping_attribute = models.IntegerField(default=1)
     owner = models.OneToOneField(User, on_delete=models.CASCADE, related_name="blacksmith")
 
-    def add_exp(self, experience):
+    def add_exp(self, experience: int):
         self.experience = F("experience") + experience
 
-    def add_gold(self, gold):
+    def add_gold(self, gold: int):
         self.gold = F("gold") + gold
 
     @property
@@ -54,7 +56,7 @@ class Blacksmith(models.Model):
     def shaping_experience_price(self) -> int:
         return self.shaping_attribute * 100 + self.attribute_multiplication
 
-    def add_heating_attribute(self):
+    def add_heating_attribute(self) -> bool:
         if self.experience < self.heating_experience_price:
             return False
 
@@ -63,7 +65,7 @@ class Blacksmith(models.Model):
         self.save()
         return True
 
-    def add_holding_attribute(self):
+    def add_holding_attribute(self) -> bool:
         if self.experience < self.holding_experience_price:
             return False
 
@@ -72,7 +74,7 @@ class Blacksmith(models.Model):
         self.save()
         return True
 
-    def add_hitting_attribute(self):
+    def add_hitting_attribute(self) -> bool:
         if self.experience < self.hitting_experience_price:
             return False
 
@@ -81,7 +83,7 @@ class Blacksmith(models.Model):
         self.save()
         return True
 
-    def add_shaping_attribute(self):
+    def add_shaping_attribute(self) -> bool:
         if self.experience < self.shaping_experience_price:
             return False
 
@@ -89,6 +91,9 @@ class Blacksmith(models.Model):
         self.shaping_attribute = F("shaping_attribute") + 1
         self.save()
         return True
+
+
+T = TypeVar("T", bound="Task")
 
 
 class Task(models.Model):
@@ -111,7 +116,7 @@ class Task(models.Model):
         return math.ceil(time_part + exp_part)
 
     @property
-    def time_to_done(self):
+    def time_to_done(self) -> int:
         return self.heating_time + self.holding_time + self.hitting_time + self.shaping_time
 
     @property
@@ -127,23 +132,23 @@ class Task(models.Model):
         return now() - self.start_time
 
     @property
-    def shaping_time(self):
+    def shaping_time(self) -> int:
         return math.ceil(self.shaping_work / self.blacksmith.shaping_attribute)
 
     @property
-    def hitting_time(self):
+    def hitting_time(self) -> int:
         return math.ceil(self.hitting_work / self.blacksmith.hitting_attribute)
 
     @property
-    def holding_time(self):
+    def holding_time(self) -> int:
         return math.ceil(self.holding_work / self.blacksmith.holding_attribute)
 
     @property
-    def heating_time(self) -> float:
+    def heating_time(self) -> int:
         return math.ceil(self.heating_work / self.blacksmith.heating_attribute)
 
     @classmethod
-    def generate_task(cls, blacksmith):
+    def generate_task(cls: Type[T], blacksmith: Blacksmith) -> T:
         task = cls()
         task.blacksmith = blacksmith
         task.heating_work = random.randint(1, blacksmith.heating_attribute * 100)
@@ -154,7 +159,7 @@ class Task(models.Model):
         return task
 
     @property
-    def can_start(self):
+    def can_start(self) -> bool:
         if self.status != TaskStatus.WAITING:
             return False
         for task in self.blacksmith.tasks.all():
@@ -163,10 +168,10 @@ class Task(models.Model):
         return True
 
     @property
-    def in_progress(self):
+    def in_progress(self) -> bool:
         return self.status == TaskStatus.IN_PROGRESS
 
-    def start(self):
+    def start(self) -> bool:
         if self.can_start:
             self.status = TaskStatus.IN_PROGRESS
             self.start_time = now()
@@ -175,8 +180,8 @@ class Task(models.Model):
         return False
 
     @property
-    def is_done(self):
-        if self.status == TaskStatus.IN_PROGRESS:
+    def is_done(self) -> bool:
+        if self.status == TaskStatus.IN_PROGRESS and self.elapsed_time:
             days_work = self.days_of_work
             seconds_work = self.seconds_of_work
             work_time = timedelta(days=days_work, seconds=seconds_work)
@@ -184,11 +189,11 @@ class Task(models.Model):
         return False
 
     @property
-    def seconds_of_work(self):
+    def seconds_of_work(self) -> float:
         return self.time_to_done % DAY_IN_SECONDS
 
     @property
-    def days_of_work(self):
+    def days_of_work(self) -> float:
         return self.time_to_done // DAY_IN_SECONDS
 
     def process(self):

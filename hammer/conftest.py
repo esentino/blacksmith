@@ -1,13 +1,14 @@
 import pytest
 from django.contrib.auth import get_user_model
 from django.contrib.auth.models import User
+from faker import Faker
 
 from hammer.models import Blacksmith
 from hammer.views import ProfileView
 
 
 @pytest.fixture()
-def new_user(faker):
+def new_user(faker: Faker) -> User:
     return get_user_model().objects.create(username=faker.user_name())
 
 
