@@ -2,43 +2,7 @@
 {% block content %}
 {% if blacksmith %}
 <div class="row">
-    <div class="card col-lg-6">
-        <div class="card-header">
-            Statistics:
-        </div>
-        <ul class="list-group list-group-flush ">
-            <li class="list-group-item">Gold: {{ blacksmith.gold }}</li>
-            <li class="list-group-item">Exp: {{ blacksmith.experience }}</li>
-            <li class="list-group-item">Heating: {{ blacksmith.heating_attribute }}
-                {% if blacksmith.heating_experience_price <= blacksmith.experience %}
-                <a href="{% url 'add-heating' %}" class="btn btn-primary">
-                    + 1 point for {{ blacksmith.heating_experience_price }} experience.
-                </a>
-                {% endif %}
-            </li>
-            <li class="list-group-item">Holding: {{ blacksmith.holding_attribute }}
-                {% if blacksmith.holding_experience_price <= blacksmith.experience %}
-                <a href="{% url 'add-holding' %}" class="btn btn-primary">
-                    + 1 point for {{ blacksmith.holding_experience_price }} experience.
-                </a>
-                {% endif %}
-            </li>
-            <li class="list-group-item">Hitting: {{ blacksmith.hitting_attribute }}
-                {% if blacksmith.hitting_experience_price <= blacksmith.experience %}
-                <a href="{% url 'add-hitting' %}" class="btn btn-primary">
-                    + 1 point for {{ blacksmith.hitting_experience_price }} experience.
-                </a>
-                {% endif %}
-            </li>
-            <li class="list-group-item">Shaping: {{ blacksmith.shaping_attribute }}
-                {% if blacksmith.shaping_experience_price <= blacksmith.experience %}
-                <a href="{% url 'add-shaping' %}" class="btn btn-primary">
-                    + 1 point for {{ blacksmith.shaping_experience_price }} experience.
-                </a>
-                {% endif %}
-            </li>
-        </ul>
-    </div>
+    {% include 'hammer/blacksmith/status_card.html' %}
     <div class="card  col-lg-6">
         <div class="card-header">
             Tasks:

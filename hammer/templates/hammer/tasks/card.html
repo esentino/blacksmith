@@ -13,12 +13,10 @@
     {% if task.in_progress %}
 
     <div class="progress">
-        <div class="progress-bar  bg-info" role="progressbar" style="width: {{ task.progress }}%;"
-             aria-valuemin="0" aria-valuemax="100">
+        <div class="progress-bar  bg-info" role="progressbar" style="width: {{ task.progress }}%;">
             {% if task.progress > task.left_progress %} Time left: {{ task.time_left }} {% endif %}
         </div>
-        <div class="progress-bar  bg-warning" role="progressbar" style="width: {{ task.left_progress }}%"
-        >
+        <div class="progress-bar  bg-warning" role="progressbar" style="width: {{ task.left_progress }}%">
             {% if task.progress <= task.left_progress %} Time left: {{ task.time_left }} {% endif %}
         </div>
     </div>
