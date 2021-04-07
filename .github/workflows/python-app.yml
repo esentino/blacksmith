@@ -35,7 +35,7 @@ jobs:
         pytest
     - name: Coverage
       run: |
-        pytest --cov=.
+        pytest --cov=. --cov-branch
     - name: Black
       run: |
         black .
