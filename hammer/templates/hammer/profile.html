@@ -1,6 +1,17 @@
 {% extends 'base.html' %}
 {% block content %}
 {% if blacksmith %}
+
+{% if messages %}
+<div class="row mb-3">
+    {% for message in messages %}
+    <div class="messages p-3 col-12 {% if message.tags %}bg-{{ message.tags }}{% endif %}" >
+        {{ message }}
+    </div>
+    {% endfor %}
+</div>
+
+{% endif %}
 <div class="row">
     {% include 'hammer/blacksmith/status_card.html' %}
     <div class="card  col-lg-6">
