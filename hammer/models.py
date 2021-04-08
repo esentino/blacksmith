@@ -114,7 +114,7 @@ class Task(models.Model):
 
     @property
     def gold(self) -> int:
-        time_part = math.log(self.heating_work + self.holding_work + self.hitting_work + self.shaping_work)
+        time_part = math.log(self.time_to_done)
         exp_part = math.log(self.experience)
         return math.ceil(time_part + exp_part)
 
